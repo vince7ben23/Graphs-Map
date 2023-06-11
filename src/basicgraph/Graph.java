@@ -148,9 +148,17 @@ public abstract class Graph {
 	 * @param v The starting vertex
 	 * @return A list of the vertices that can be reached in exactly two hops (by 
 	 * following two edges) from vertex v.
-	 * XXX: Implement in part 2 of week 2 for each subclass of Graph
 	 */
-	public abstract List<Integer> getDistance2(int v); 
+	public List<Integer> getDistance2(int v) {
+		// Implement this method in week 2
+		List<Integer> result = new ArrayList<Integer>();
+		 
+		 for (int vertex: getNeighbors(v)) {
+			 result.addAll(getNeighbors(vertex));
+		 }
+		 
+		 return result;
+	}
 
 	/** Return a String representation of the graph
 	 * @return A string representation of the graph

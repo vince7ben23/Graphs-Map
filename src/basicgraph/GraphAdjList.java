@@ -86,26 +86,6 @@ public class GraphAdjList extends Graph {
 		}
 		return inNeighbors;
 	}
-	 
-
-	/** 
-	 * Implement the abstract method for finding all 
-	 * vertices reachable by two hops from v.
-	 * 
-	 * @param v the index of vertex.
-	 * @return List<Integer> a list of indices of vertices.  
-	 */		
-	 public List<Integer> getDistance2(int v) {
-		 // Implement this method in week 2
-		 List<Integer> result = new ArrayList<Integer>();
-		 
-		 for (int vertex: adjListsMap.get(v)) {
-			 List<Integer> temp = adjListsMap.get(vertex);
-			 result.addAll(temp);
-		 }
-		 
-		 return result;
-	}
 	
 	/**
 	 * Generate string representation of adjacency list

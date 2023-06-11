@@ -96,32 +96,6 @@ public class GraphAdjMatrix extends Graph {
 		return inNeighbors;
 	}
 	
-	/** 
-	 * Implement the abstract method for finding all 
-	 * vertices reachable by two hops from v.
-	 * Use matrix multiplication to record length 2 paths.
-	 * 
-	 * @param v the index of vertex.
-	 * @return List<Integer> a list of indices of vertices.  
-	 */	
-	public List<Integer> getDistance2(int v) {
-		// Implement this method in week 2
-		List<Integer> result = new ArrayList<Integer>();
-		List<Integer> oneHopList = new ArrayList<Integer>();
-		int index = 0;
-		for (int val: adjMatrix[v]) {
-			if (1==val) {
-				oneHopList.add(index);
-			}
-			index++;
-		}
-		for (int vertex: oneHopList) {
-			List<Integer> temp = getNeighbors(vertex);
-			result.addAll(temp);
-		}
-		return result;
-	}
-	
 	/**
 	 * Generate string representation of adjacency matrix
 	 * @return the String
