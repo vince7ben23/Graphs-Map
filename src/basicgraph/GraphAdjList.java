@@ -13,7 +13,8 @@ import java.util.Set;
  * The edges of the graph are not labeled.
  * Representation of edges via adjacency lists.
  * 
- * @author UCSD MOOC development team and YOU
+ * @author UCSD MOOC development team and Cheng-Ying Chen:
+ * @date 2023/06/11
  *
  */
 public class GraphAdjList extends Graph {
@@ -84,19 +85,6 @@ public class GraphAdjList extends Graph {
 			}
 		}
 		return inNeighbors;
-	}
-	 
-
-	/** 
-	 * Implement the abstract method for finding all 
-	 * vertices reachable by two hops from v.
-	 * 
-	 * @param v the index of vertex.
-	 * @return List<Integer> a list of indices of vertices.  
-	 */		
-	 public List<Integer> getDistance2(int v) {
-		 // XXX: Implement this method in week 2
-		 return null;
 	}
 	
 	/**

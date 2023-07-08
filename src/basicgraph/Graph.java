@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.Comparator;
 
 import util.GraphLoader;
 
@@ -17,7 +18,8 @@ import util.GraphLoader;
  * The edges of the graph are not labeled.
  * Representation of edges is left abstract.
  * 
- * @author UCSD MOOC development team and YOU
+ * @author UCSD MOOC development team and Cheng-Ying Chen:
+ * @date 2023/06/11
  * 
  */
 
@@ -121,8 +123,24 @@ public abstract class Graph {
 	 * @return The degree sequence of this graph.
 	 */
 	public List<Integer> degreeSequence() {
-		// XXX: Implement in part 1 of week 2
-		return null;
+		List<Integer> result = new ArrayList<Integer>();
+		// Implement in part 1 of week 2
+		for (int v=0; v<numVertices; v++) {
+			List<Integer> outNieghborList = getNeighbors(v);
+			List<Integer> inNieghborList = getInNeighbors(v);
+			result.add(outNieghborList.size() + inNieghborList.size());
+		}
+		result.sort(Comparator.reverseOrder());
+		return result;
+	}
+	
+	public int degreeSum() {
+		int sum = 0;
+		List<Integer> degreeSeq = degreeSequence();
+		for (int degree: degreeSeq) {
+			sum+=degree;
+		}
+		return sum;
 	}
 	
 	/**
@@ -130,9 +148,17 @@ public abstract class Graph {
 	 * @param v The starting vertex
 	 * @return A list of the vertices that can be reached in exactly two hops (by 
 	 * following two edges) from vertex v.
-	 * XXX: Implement in part 2 of week 2 for each subclass of Graph
 	 */
-	public abstract List<Integer> getDistance2(int v); 
+	public List<Integer> getDistance2(int v) {
+		// Implement this method in week 2
+		List<Integer> result = new ArrayList<Integer>();
+		 
+		 for (int vertex: getNeighbors(v)) {
+			 result.addAll(getNeighbors(vertex));
+		 }
+		 
+		 return result;
+	}
 
 	/** Return a String representation of the graph
 	 * @return A string representation of the graph
@@ -140,6 +166,7 @@ public abstract class Graph {
 	public String toString() {
 		String s = "\nGraph with " + numVertices + " vertices and " + numEdges + " edges.\n";
 		s += "Degree sequence: " + degreeSequence() + ".\n";
+		s += "Total degree: " + degreeSum() + ".\n";
 		if (numVertices <= 20) s += adjacencyString();
 		return s;
 	}
