@@ -1,4 +1,4 @@
-# Class: MapGraph
+# MapGraph
 
 # Modifications made to MapGraph (what and why):
 
