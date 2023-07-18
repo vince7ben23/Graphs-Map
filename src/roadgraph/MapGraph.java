@@ -1,37 +1,44 @@
-/**
- * @author UCSD MOOC development team and YOU
- * 
- * A class which reprsents a graph of geographic locations
- * Nodes in the graph are intersections between 
- *
- */
 package roadgraph;
 
 
 import java.util.List;
+import java.util.LinkedList;
 import java.util.Set;
+import java.util.Map;
+import java.util.Queue;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.function.Consumer;
+import java.lang.IllegalArgumentException;
 
 import geography.GeographicPoint;
 import util.GraphLoader;
 
+
 /**
- * @author UCSD MOOC development team and YOU
  * 
  * A class which represents a graph of geographic locations
- * Nodes in the graph are intersections between 
- *
+ * Nodes in the graph are intersections between
+ *  
+ * @author Cheng-Ying, Chen
  */
+
 public class MapGraph {
-	//TODO: Add your member variables here in WEEK 3
-	
-	
+	// Add member variables here in WEEK 3
+	private Map<GeographicPoint, MapNode> graph;
+	private int verticesNum;
+	private Set<GeographicPoint> vertices;
+	private int edgesNum;
 	/** 
 	 * Create a new empty MapGraph 
 	 */
 	public MapGraph()
 	{
-		// TODO: Implement in this constructor in WEEK 3
+		// Implement in this constructor in WEEK 3
+		this.graph = new HashMap<GeographicPoint, MapNode>();
+		this.vertices = new HashSet<GeographicPoint>();
+		this.verticesNum = 0;
+		this.edgesNum = 0;
 	}
 	
 	/**
@@ -40,8 +47,8 @@ public class MapGraph {
 	 */
 	public int getNumVertices()
 	{
-		//TODO: Implement this method in WEEK 3
-		return 0;
+		// Implement this method in WEEK 3
+		return verticesNum;
 	}
 	
 	/**
@@ -50,8 +57,8 @@ public class MapGraph {
 	 */
 	public Set<GeographicPoint> getVertices()
 	{
-		//TODO: Implement this method in WEEK 3
-		return null;
+		// Implement this method in WEEK 3
+		return vertices;
 	}
 	
 	/**
@@ -60,11 +67,10 @@ public class MapGraph {
 	 */
 	public int getNumEdges()
 	{
-		//TODO: Implement this method in WEEK 3
-		return 0;
+		// Implement this method in WEEK 3
+		return edgesNum;
 	}
 
-	
 	
 	/** Add a node corresponding to an intersection at a Geographic Point
 	 * If the location is already in the graph or null, this method does 
@@ -75,8 +81,15 @@ public class MapGraph {
 	 */
 	public boolean addVertex(GeographicPoint location)
 	{
-		// TODO: Implement this method in WEEK 3
-		return false;
+		// Implement this method in WEEK 3
+		if (graph.containsKey(location) || null == location) {
+			return false;
+		}
+		graph.put(location, new MapNode(location));
+		vertices = graph.keySet();
+		verticesNum += 1;
+		return true;
+		
 	}
 	
 	/**
@@ -94,8 +107,27 @@ public class MapGraph {
 	public void addEdge(GeographicPoint from, GeographicPoint to, String roadName,
 			String roadType, double length) throws IllegalArgumentException {
 
-		//TODO: Implement this method in WEEK 3
-		
+		// Implement this method in WEEK 3
+		if (!checkBeforeAddEdge(from, to, length)) {
+			throw new IllegalArgumentException("check from/to points in the graph and arguments are valid");
+		}
+		List<MapEdge> edges = graph.get(from).getEdges();
+		MapEdge newEdge = new MapEdge(from, to, roadName, roadType, length);
+		edges.add(newEdge);
+		edgesNum += 1;
+	}
+	
+	private boolean checkBeforeAddEdge(GeographicPoint from, GeographicPoint to, double length) {
+		if (
+				!graph.containsKey(from) || 
+				!graph.containsKey(to) ||
+				null==from ||
+				null==to ||
+				length < 0
+			) {
+			return false;
+		}
+		return true;
 	}
 	
 
@@ -121,14 +153,77 @@ public class MapGraph {
 	 *   path from start to goal (including both start and goal).
 	 */
 	public List<GeographicPoint> bfs(GeographicPoint start, 
-			 					     GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
+			 					     GeographicPoint goal, 
+			 					     Consumer<GeographicPoint> nodeSearched
+			 					    )
 	{
-		// TODO: Implement this method in WEEK 3
+		// Implement this method in WEEK 3
 		
-		// Hook for visualization.  See writeup.
-		//nodeSearched.accept(next.getLocation());
-
-		return null;
+		MapNode startNode = this.graph.get(start);
+		MapNode goalNode = this.graph.get(goal);
+		
+		if (startNode == null || goalNode == null) {
+			throw new IllegalArgumentException("start or goal point is null.");
+		}
+		
+		// initialize structures that BFS needs
+		HashMap<MapNode, MapNode> parentMap = new HashMap<MapNode, MapNode>();
+		
+		boolean found = bfsSearch(startNode, goalNode, parentMap, nodeSearched);
+		
+		if (!found) {
+			return null;
+		}
+		List<GeographicPoint> path = constructPath(startNode, goalNode, parentMap);
+		return path;
+	}
+	
+	private boolean bfsSearch(
+			MapNode startNode,
+			MapNode goalNode, 
+			HashMap<MapNode, MapNode> parentMap,
+			Consumer<GeographicPoint> nodeSearched
+			) {
+		// initialize structures that BFS needs
+		Queue<MapNode> toExplore = new LinkedList<MapNode>();
+		HashSet<MapNode> seenNodes = new HashSet<MapNode>();
+		boolean found = false;
+	
+		toExplore.add(startNode);	
+		while (!toExplore.isEmpty()) {
+			MapNode currNode = toExplore.remove();
+			if (currNode == goalNode) {
+				found = true;
+				break;
+			}
+			List<MapEdge> edges = currNode.getEdges();
+			for (MapEdge edge : edges) {
+				MapNode neighborNode =  this.graph.get(edge.getEnd());
+				if (!seenNodes.contains(neighborNode)) {
+					seenNodes.add(neighborNode);
+					parentMap.put(neighborNode, currNode);
+					toExplore.add(neighborNode);
+					nodeSearched.accept(neighborNode.getLocation());
+				}
+			}
+ 		}
+		
+		return found;
+	}
+	
+	private List<GeographicPoint> constructPath(
+			MapNode startNode, 
+			MapNode goalNode, 
+			HashMap<MapNode, MapNode> parentMap
+			) {
+		LinkedList<GeographicPoint> path = new LinkedList<GeographicPoint>();
+		MapNode currNode = goalNode;
+		while (currNode != startNode) {
+			path.addFirst(currNode.getLocation());
+			currNode = parentMap.get(currNode);
+		}
+		path.addFirst(currNode.getLocation());
+		return path;
 	}
 	
 

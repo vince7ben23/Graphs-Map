@@ -121,7 +121,7 @@ public class Maze {
 	 * 
 	 * @param path A path of MazeNodes from start to goal.
 	 */
-	public void setPath(List<MazeNode> path) {
+	public void setPath(List<MazeNode> path) { 
 		int index = 0;
 		for (MazeNode n : path) {
 			if (index == 0) {
@@ -176,12 +176,29 @@ public class Maze {
 
 		HashMap<MazeNode, MazeNode> parentMap = new HashMap<MazeNode, MazeNode>();
 		
+		boolean found = dfsSearch(start, goal, parentMap);
+		
+		if (!found) {
+			System.out.println("No path exists");
+			return new LinkedList<MazeNode>();
+		}
+
+		return constructPath(start, goal, parentMap);
+	}
+	
+	
+	private boolean dfsSearch(
+			MazeNode start, 
+			MazeNode goal, 
+			HashMap<MazeNode, MazeNode> parentMap
+			) 
+	{
 		HashSet<MazeNode> visited = new HashSet<MazeNode>();
 		Stack<MazeNode> toExplore = new Stack<MazeNode>();
 		toExplore.push(start);
 		boolean found = false;
 
-		// Do the search
+		
 		while (!toExplore.empty()) {
 			MazeNode curr = toExplore.pop();
 			if (curr == goal) {
@@ -199,13 +216,16 @@ public class Maze {
 				}
 			}
 		}
-		
-		if (!found) {
-			System.out.println("No path exists");
-			return new LinkedList<MazeNode>();
-		}
-
-		// reconstruct the path
+		return found;
+	}
+	
+	
+	private List<MazeNode> constructPath(
+			MazeNode start, 
+			MazeNode goal, 
+			HashMap<MazeNode, MazeNode> parentMap
+			) 
+	{
 		LinkedList<MazeNode> path = new LinkedList<MazeNode>();
 		MazeNode curr = goal;
 		while (curr != start) {
