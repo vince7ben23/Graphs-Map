@@ -1,12 +1,17 @@
-# MapGraph
+# Class `MapGraph`
+- use `MapNode` and `MapEdge` to construct MapGraph
+- Three search algorithms can search the shortest path
+  - BFS (only for un-weighted graph)
+  - Dijkstra
+  - A-Star search
 
-# Modifications made to MapGraph (what and why):
+## Class `MapNode`
+- store location and its edges
+- store additional data for Dijkstra and A-Star search
+  - actual distance from start node
+  - predict distance to gaol node   
 
-## Class name: `MapNode`
-- Purpose and description of class: store location and its edges
+## Class `MapEdge`
+- store the edge of start point and end point
+- store the length from start point and end point
 
-## Class name: `MapEdge`
-- Purpose and description of class: describe the edge of the start and end points pair
-
-# Overall Design
-- use `MapNode` and `MapEdge` to construct MapGraph 

@@ -14,7 +14,7 @@ public class MapEdge {
 		this.end = end;
 		this.roadName = roadName;
 		this.roadType = roadType;
-		this.length = length;
+		this.length = start.distance(end);
 	}
 	
 	public GeographicPoint getStart() {
@@ -25,11 +25,11 @@ public class MapEdge {
 		return this.end;
 	}
 	
-	public String getroadName() {
+	public String getRoadName() {
 		return this.roadName;
 	}
 	
-	public String getroadType() {
+	public String getRoadType() {
 		return this.roadType;
 	}
 	
