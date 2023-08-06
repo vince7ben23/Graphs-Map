@@ -196,6 +196,11 @@ implements MapComponentInitializedListener {
 
 
 	// SETTING UP THE VIEW
+	/**
+	 * Setup layout and controls for Fetch tab
+	 * @param fetchButton
+	 * @param tf
+	 */
 
 	private HBox getBottomBox(TextField tf, Button fetchButton) {
 		HBox box = new HBox();
@@ -205,13 +210,11 @@ implements MapComponentInitializedListener {
 		box.getChildren().add(fetchButton);
 		return box;
 	}
-	/**
-	 * Setup layout and controls for Fetch tab
-	 * @param fetchTab
-	 * @param fetchButton
-	 * @param displayButton
-	 * @param tf
-	 */
+
+	 /**
+	  * @param displayButton
+	  * @param cb
+	  */
 	private VBox getFetchBox(Button displayButton, ComboBox<DataSet> cb) {
 		// add button to tab, rethink design and add V/HBox for content
 		VBox v = new VBox();
@@ -238,7 +241,6 @@ implements MapComponentInitializedListener {
 	 * Setup layout of route tab and controls
 	 *
 	 * @param routeTab
-	 * @param box
 	 */
 	private void setupRouteTab(Tab routeTab, VBox fetchBox, Label startLabel, Label endLabel, Label pointLabel,
 			Button showButton, Button hideButton, Button resetButton, Button vButton, Button startButton,
