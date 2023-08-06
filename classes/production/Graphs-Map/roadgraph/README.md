@@ -1,9 +1,9 @@
 # Class `MapGraph`
 - use `MapNode` and `MapEdge` to construct MapGraph
-- Three search algorithms can search the shortest path
-  - BFS (only for un-weighted graph)
-  - Dijkstra
-  - A-Star search
+- three search algorithms can search the shortest path
+  - BFS (only for un-weighted graphs)
+  - Dijkstra Search
+  - A-Star Search
 
 ## Class `MapNode`
 - store location and its edges
